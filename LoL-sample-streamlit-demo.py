@@ -213,5 +213,3 @@ if password == st.secrets['site_password']:
         st.write('')
         st.write('I see a ton of potential in what Locate-a-Locem is offering and believe that now is the perfect time to move towards a more data-driven approach and invest in this capacity. I appreciate your consideration!')
 
-else:
-    st.write('Refresh the page and try entering the password again')
