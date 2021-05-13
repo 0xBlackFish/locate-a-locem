@@ -5,12 +5,12 @@ from tqdm import tqdm
 from datetime import datetime
 import streamlit as st
 
+st.set_page_config('LoL Demo',layout='wide',initial_sidebar_state='auto')
 password = st.text_input('Enter the password to access the site: ')
 
 if password == st.secrets['site_password']:
 
     ### Streamlit Design Elements ###
-    st.set_page_config('LoL Demo',layout='wide',initial_sidebar_state='auto')
     radios = st.sidebar.radio('Pages',['Analysis','Proposal'])
     alt.data_transformers.disable_max_rows()
 
