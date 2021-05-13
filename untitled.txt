@@ -1,0 +1,93 @@
+from google.cloud import storage
+from io import StringIO
+import numpy as np
+import altair as alt
+import pandas as pd
+from tqdm import tqdm
+from math import sin, cos, sqrt, atan2, radians
+
+client = storage.Client()
+
+bucket = client.get_bucket('locate-a-locum-m2-analytics')
+
+def convert_csv_to_output(filename):
+    
+    blob = bucket.get_blob(filename)
+    bt = blob.download_as_string()
+    s = str(bt,'utf-8')
+    s = StringIO(s)
+    
+    return s
+    
+    
+shifts_df = pd.read_csv(convert_csv_to_output('sample-data-shifts.csv'),parse_dates=['Posted Date','Start Time','End Time'])
+users_df = pd.read_csv(convert_csv_to_output('sample-data-users.csv'),parse_dates=['Created Date'])
+applications_df = pd.read_csv(convert_csv_to_output('sample-data-applications.csv'))
+
+shifts_df['Latitude'] = shifts_df['Latitude'].apply(lambda x: float(x))
+
+def calculate_shift_distance_to_user(user_latitude, user_longitude, shift_latitude, shift_longitude):
+    '''Calculates shift distance to user'''
+    # Calculate difference between user latitude and shift latitude
+    latitude_difference = user_latitude - shift_latitude
+    
+    # Calculate difference between user longitude and shift longitude
+    longitude_difference = user_longitude - shift_longitude
+    
+    # Apply haversine formula to calculat distance
+    R = radius_of_the_earth = 6373.0
+    
+    a = sin(latitude_difference / 2)**2 + cos(user_latitude) * cos(shift_latitude) * sin(longitude_difference / 2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    shift_distance_to_user = R * c
+    
+    return shift_distance_to_user
+
+
+
+def is_user_eligible_for_shift(user_create_date, shift_post_date):
+    '''Determines if a user is eligible for a shift'''
+    # Compare user create date to shift post date
+    eligibility_ind = False
+    
+    if user_create_date <= shift_post_date:
+        eligibility_ind = True
+    
+    return eligibility_ind
+
+
+
+def count_eligible_shifts(user_create_date):
+    '''Counts shifts that a user is eligible for'''
+    # Create list of shift dates
+    shift_dates = shifts_df['Posted Date'].tolist()
+    
+    # Sum the user eligible shifts by feeding the shift dates and user create dates into the eligibility function
+    shifts_eligible_cnt = sum([is_user_eligible_for_shift(user_create_date, date) for date in shift_dates])
+
+    return shifts_eligible_cnt
+
+
+
+def count_shifts_in_radius(user_create_date, user_latitude, user_longitude, travel_radius):
+    '''Counts shifts in a user's work radius'''
+    # Determine whether a shift is eligible for counting
+    shift_dates = shifts_df['Posted Date'].tolist()
+    
+    eligbile_shifts = [is_user_eligible_for_shift(user_create_date, date) for date in shift_dates]
+    
+    shift_coordinates = list(shifts_df[['Latitude','Longitude']][eligbile_shifts].to_records(index=False))
+    
+    # Sum the user eligible shifts that are less than or equal to the user travel radius by feeding the user lat/long and shift lat/long into the calculate shift distance to user function
+    in_radius_cnt = sum([calculate_shift_distance_to_user(user_latitude, user_longitude, shift_latitude, shift_longitude) <= travel_radius for shift_latitude, shift_longitude in shift_coordinates])
+ 
+    return in_radius_cnt
+    
+users_test_df = users_df.iloc[:5000]
+
+# np.vectorize(count_shifts_in_radius)(list(users_test_df[['Created Date','Latitude','Longitude','Travel Radius']].to_records(index=False)))
+users_test_df['shifts_in_radius'] = np.vectorize(count_shifts_in_radius)(users_test_df['Created Date'], users_test_df['Latitude'], users_test_df['Longitude'], users_test_df['Travel Radius'])
+users_test_df['shifts_eligible'] = users_test_df['Created Date'].apply(count_eligible_shifts)
+
+users_test_df.to_feather('users_0_5000.feather')
