@@ -112,7 +112,7 @@ if password == st.secrets['site_password']:
             
             return label
 
-        df['Travel Radius Band'] = df['shifts_in_radius'].apply(travel_radius_bin)
+        df['Shifts In Radius Bin'] = df['shifts_in_radius'].apply(travel_radius_bin)
 
         col_hist, col_blank2, col_analysis_2 = st.beta_columns([3,1,3])
 
@@ -170,14 +170,14 @@ if password == st.secrets['site_password']:
             scatter = alt.Chart(df[(df['Created Date'] <= datetime(2021,3,1,0,0,0)) & (df['Travel Radius'] <= 300)]).mark_circle(size=60).encode(
                 x=alt.X('shifts_in_radius',axis=alt.Axis(title='Shifts in Travel Radius', labelFontSize=12, labelPadding=10, titleFontSize=16, titlePadding=20)),
                 y=alt.Y('Travel Radius',axis=alt.Axis(title="User's Travel Radius",labelFontSize=12, labelPadding=10, titleFontSize=16, titlePadding=20)),
-                color='Travel Radius Band'
+                color='Shifts In Radius Bin'
             ).interactive().properties(height=400,width=700)
 
             st.altair_chart(scatter,use_container_width=True)
 
         with col_analysis_3:
             st.write('## Understanding the View')
-            st.write('Exhibit 4 is a scatterplot comparing the user\'s stated travel radius with the number of shifts within their travel radius. Like exhibits 2 and 3, this view only includes users who were acquired on, or before, March 1, 2021. The y-axis has been truncated to 200 to exclude outliers, and to provide a more detailed look at how users are concentratd. The colors represent the range which a user falls into for the number of shifts that fall within their designated travel radius. This chart is interactive, and will allow you to zoom in and out.')
+            st.write('Exhibit 4 is a scatterplot comparing the user\'s stated travel radius with the number of shifts within their travel radius. Like exhibits 2 and 3, this view only includes users who were acquired on, or before, March 1, 2021. The y-axis has been truncated to 200 to exclude outliers, and to provide a more detailed look at how users are concentrated. The colors represent the range which a user falls into for the number of shifts that fall within their designated travel radius. This chart is interactive, and will allow you to zoom in and out.')
             st.write('')
             st.write('## Insights')
             st.write('The key callout here is that in many cases, even for users who list high travel radii, such as 100 km, we still observe a large amount of users with few shifts nearby. The non-linear shape of this plot supports the case for geographic concentration and supply shortages for many users/locations. Intuitively, you would expect that the larger a user\'s travel radius, the more shifts they would have available to them. However, this chart indicates that these variables are weakly correlated at best.')
