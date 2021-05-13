@@ -168,7 +168,7 @@ if radios == 'Analysis':
             color='Travel Radius Band'
         ).interactive().properties(height=400,width=700)
 
-        st.altair_chart(scatter,use_container_width=False)
+        st.altair_chart(scatter,use_container_width=True)
 
     with col_analysis_3:
         st.write('## Understanding the View')
