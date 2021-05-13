@@ -83,10 +83,10 @@ if password == st.secrets['site_password']:
 
         with col_analysis_1:
             st.write('## Understanding the View')
-            st.write('Exhibit 1 is a map of the UK and Ireland, which has been plotted with user and shift locations. Users are represented by the color orange and shifts are represented by the color blue. The bigger the circle, the large the concentration of users or shifts in that location. The maximum number of users in a single location is 465, and the maximum number of shifts in a single location was 240. Hover over the circles to see the shift count or user count.')
+            st.write('Exhibit 1 is a map of the UK and Ireland, which has been plotted with user and shift locations. Users are represented by the color orange and shifts are represented by the color blue. The bigger the circle, the larger the concentration of users or shifts in that location. The maximum number of users in a single location is 465, and the maximum number of shifts in a single location was 240. Hover over the circles to see the shift count or user count.')
             st.write('')
             st.write('## Insights')
-            st.write('Immediately, we see that users and shifts have contrasting patterns of dispersal. Users are concentratd in major urban centers like London, Greater Manchester, Liverpool, and Birmingham. Whereas shifts are spread throughout the country. In urban areas, demand for shifts is likely to meet, or even exceed supply. However, there appears to be a large number of shifts in areas with less user coverage, which could be leading to fewer applications.')
+            st.write('Immediately, we see that users and shifts have contrasting patterns of dispersion. Users are concentratd in major urban centers like London, Greater Manchester, Liverpool, and Birmingham. Whereas shifts are spread throughout the country. In urban areas, demand for shifts is likely to meet, or even exceed supply. However, there appears to be a large number of shifts in areas with less user coverage, which could be leading to fewer applications.')
 
         st.write('')
         st.write('')
@@ -177,7 +177,7 @@ if password == st.secrets['site_password']:
 
         with col_analysis_3:
             st.write('## Understanding the View')
-            st.write('Exhibit 4 is a scatterplot comparing the a user\'s stated travel radius with the number of shifts in their travel radius. Like exhibits 2 and 3, this view only includes user\'s who were acquired on, or before, March 1, 2021. The y-axis has been truncated to 200 to exclude outliers, and to provide a more detailed look at how users are concentratd. The colors represent the range which a user falls into for the number of shifts that fall within their designated travel radius. This chart is interactive, and will allow you to zoom in and out.')
+            st.write('Exhibit 4 is a scatterplot comparing the user\'s stated travel radius with the number of shifts within their travel radius. Like exhibits 2 and 3, this view only includes users who were acquired on, or before, March 1, 2021. The y-axis has been truncated to 200 to exclude outliers, and to provide a more detailed look at how users are concentratd. The colors represent the range which a user falls into for the number of shifts that fall within their designated travel radius. This chart is interactive, and will allow you to zoom in and out.')
             st.write('')
             st.write('## Insights')
             st.write('The key callout here is that in many cases, even for users who list high travel radii, such as 100 km, we still observe a large amount of users with few shifts nearby. The non-linear shape of this plot supports the case for geographic concentration and supply shortages for many users/locations. Intuitively, you would expect that the larger a user\'s travel radius, the more shifts they would have available to them. However, this chart indicates that these variables are weakly correlated at best.')
@@ -208,7 +208,7 @@ if password == st.secrets['site_password']:
         st.write('')
         st.write('')
         st.header('3. Cohort Analyses')
-        st.write('This analytical approach could be applid to a variety of measures, but the two I would look at first are churn and core actions. By looking at these two, we can answer questions like, "is retention, as defined by users taking a core action for the product, improving for newer cohorts?" or "are users in certain markets better retained than those in others?"')
+        st.write('This analytical approach could be applied to a variety of measures, but the two I would look at first are churn and core actions. By looking at these two, we can answer questions like, "is retention, as defined by users taking a core action for the product, improving for newer cohorts?" or "are users in certain markets better retained than those in others?"')
         st.write('')
         st.write('')
         st.write('I see a ton of potential in what Locate-a-Locem is offering and believe that now is the perfect time to move towards a more data-driven approach and invest in this capacity. I appreciate your consideration!')
