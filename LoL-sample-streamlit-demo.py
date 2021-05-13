@@ -7,9 +7,9 @@ import streamlit as st
 from getpass import getpass
 
 st.set_page_config('LoL Demo',layout='wide',initial_sidebar_state='auto')
-p = getpass()
+password = st.text_input('Enter the password to access the site: ')
 
-if p == st.secrets['site_password']:
+if password == st.secrets['site_password']:
 
     ### Streamlit Design Elements ###
     radios = st.sidebar.radio('Pages',['Analysis','Proposal'])
