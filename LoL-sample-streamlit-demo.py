@@ -4,7 +4,7 @@ import pandas as pd
 from tqdm import tqdm
 from datetime import datetime
 import streamlit as st
-from getpass import getpass
+
 
 st.set_page_config('LoL Demo',layout='wide',initial_sidebar_state='auto')
 password = st.text_input('Enter the password to access the site: ')
